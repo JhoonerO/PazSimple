@@ -1,144 +1,181 @@
-import { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  StatusBar,
-  Alert,
-  Switch
-} from 'react-native';
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { 
-  ArrowLeft, 
-  Edit3, 
-  Bell, 
-  Shield, 
-  HelpCircle, 
-  Info,
-  LogOut,
-  Moon,
-  Globe,
-  Home,
-  Plus,
-  User
-} from 'lucide-react-native';
+"use client"
+
+import { useState } from "react"
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Alert, Switch, Linking } from "react-native"
+import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
+import { ArrowLeft, Edit3, Bell, Shield, HelpCircle, Info, LogOut, Globe, Home, Plus, User } from "lucide-react-native"
+import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
 
 export default function SettingsScreen({ navigation }) {
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [darkModeEnabled, setDarkModeEnabled] = useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
-  // Cargar fuentes Poppins
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_600SemiBold,
     Poppins_700Bold,
-  });
+  })
 
   const handleEditProfile = () => {
-    Alert.alert('Editar Perfil', 'Funcionalidad próximamente...');
-  };
-
-  const handleNotifications = () => {
-    Alert.alert('Notificaciones', 'Configurar notificaciones próximamente...');
-  };
-
-  const handlePrivacy = () => {
-    Alert.alert('Privacidad', 'Configuraciones de privacidad próximamente...');
-  };
+    Alert.alert("Editar Perfil", "Funcionalidad próximamente...")
+  }
 
   const handleHelp = () => {
-    Alert.alert('Ayuda', 'Centro de ayuda próximamente...');
-  };
+    Alert.alert("Centro de Ayuda", "¿Necesitas ayuda? Elige una opción:", [
+      {
+        text: "Preguntas Frecuentes",
+        onPress: () =>
+          Alert.alert(
+            "Preguntas Frecuentes",
+            "• ¿Cómo publico una historia?\n• ¿Cómo cambio mi foto de perfil?\n• ¿Cómo reporto contenido inapropiado?\n• ¿Cómo elimino mi cuenta?\n\nPara más ayuda, contáctanos por email.",
+          ),
+      },
+      {
+        text: "Contactar Soporte",
+        onPress: () => {
+          Linking.openURL("mailto:soporte@pazapp.com?subject=Ayuda PAZ App")
+        },
+      },
+      { text: "Cancelar", style: "cancel" },
+    ])
+  }
 
   const handleAbout = () => {
-    Alert.alert('Acerca de PAZ', 'Versión 1.0.0\nApp para compartir historias urbanas');
-  };
+    Alert.alert(
+      "Acerca de PAZ",
+      "PAZ - Plataforma de Historias Urbanas\n\nVersión: 1.0.0\nDesarrollado con ❤️ para compartir historias misteriosas y urbanas.\n\n© 2024 PAZ App. Todos los derechos reservados.",
+      [
+        {
+          text: "Términos de Servicio",
+          onPress: () => Alert.alert("Términos", "Funcionalidad próximamente..."),
+        },
+        {
+          text: "Política de Privacidad",
+          onPress: () => handlePrivacy(),
+        },
+        { text: "OK" },
+      ],
+    )
+  }
+
+  const handlePrivacy = () => {
+    Alert.alert("Configuración de Privacidad", "Gestiona tu privacidad y datos:", [
+      {
+        text: "Datos Personales",
+        onPress: () =>
+          Alert.alert(
+            "Datos Personales",
+            "• Tus historias son públicas por defecto\n• Tu perfil es visible para otros usuarios\n• No compartimos tu información con terceros\n• Puedes eliminar tu cuenta en cualquier momento",
+          ),
+      },
+      {
+        text: "Configurar Privacidad",
+        onPress: () =>
+          Alert.alert(
+            "Privacidad",
+            "Opciones disponibles:\n\n• Perfil público/privado\n• Historias públicas/privadas\n• Permitir comentarios\n• Recibir notificaciones\n\nFuncionalidad completa próximamente...",
+          ),
+      },
+      {
+        text: "Eliminar Datos",
+        style: "destructive",
+        onPress: () =>
+          Alert.alert(
+            "Eliminar Datos",
+            "¿Estás seguro de que quieres eliminar todos tus datos? Esta acción no se puede deshacer.",
+            [
+              { text: "Cancelar", style: "cancel" },
+              {
+                text: "Eliminar",
+                style: "destructive",
+                onPress: () => Alert.alert("Datos eliminados", "Tus datos han sido eliminados correctamente."),
+              },
+            ],
+          ),
+      },
+      { text: "Cancelar", style: "cancel" },
+    ])
+  }
 
   const handleLanguage = () => {
-    Alert.alert('Idioma', 'Configuración de idioma próximamente...');
-  };
+    Alert.alert("Seleccionar Idioma", "Elige tu idioma preferido:", [
+      { text: "Español (Actual)", style: "default" },
+      {
+        text: "English",
+        onPress: () => Alert.alert("Idioma", "Funcionalidad próximamente..."),
+      },
+      {
+        text: "Português",
+        onPress: () => Alert.alert("Idioma", "Funcionalidad próximamente..."),
+      },
+      { text: "Cancelar", style: "cancel" },
+    ])
+  }
 
   const handleLogout = () => {
-    Alert.alert(
-      'Cerrar Sesión',
-      '¿Estás seguro de que quieres cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Cerrar Sesión', 
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            });
-          }
-        }
-      ]
-    );
-  };
+    Alert.alert("Cerrar Sesión", "¿Estás seguro de que quieres cerrar sesión?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Cerrar Sesión",
+        style: "destructive",
+        onPress: () => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          })
+        },
+      },
+    ])
+  }
 
-  const goBack = () => {
-    navigation.goBack();
-  };
+  const goBack = () => navigation.goBack()
+  const goToHome = () => navigation.replace("Home")
+  const goToCreateStory = () => navigation.navigate("CreateStory")
+  const goToProfile = () => navigation.replace("Profile")
 
-  const goToHome = () => {
-    navigation.replace('Home');
-  };
-
-  const goToCreateStory = () => {
-    navigation.navigate('CreateStory');
-  };
-
-  const goToProfile = () => {
-    navigation.replace('Profile');
-  };
-
-  // Mostrar loading mientras cargan las fuentes
   if (!fontsLoaded) {
-    return <View style={styles.container}><Text style={styles.loadingText}>Cargando...</Text></View>;
+    return (
+      <View style={globalStyles.loadingContainer}>
+        <Text style={globalStyles.loadingText}>Cargando...</Text>
+      </View>
+    )
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#040813" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack}>
+    <View style={globalStyles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+
+      <View style={globalStyles.header}>
+        <TouchableOpacity style={globalStyles.backButton} onPress={goBack}>
           <ArrowLeft color="white" size={24} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Configuraciones</Text>
-        <View style={styles.placeholder} />
+        <Text style={globalStyles.headerTitle}>Configuraciones</Text>
+        <View style={globalStyles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        
+      <ScrollView style={globalStyles.content} showsVerticalScrollIndicator={false}>
         {/* Sección Cuenta */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Cuenta</Text>
-          
+
           <TouchableOpacity style={styles.optionItem} onPress={handleEditProfile}>
-            <Edit3 color="#4a5cdb" size={20} />
+            <Edit3 color={COLORS.primary} size={20} />
             <Text style={styles.optionText}>Editar Perfil</Text>
-            <ArrowLeft color="#888" size={16} style={styles.chevronIcon} />
+            <ArrowLeft color={COLORS.textMuted} size={16} style={styles.chevronIcon} />
           </TouchableOpacity>
         </View>
 
         {/* Sección Configuraciones */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Configuraciones</Text>
-          
+
           <View style={styles.optionItem}>
             <Bell color="#f39c12" size={20} />
             <Text style={styles.optionText}>Notificaciones</Text>
             <Switch
               value={notificationsEnabled}
               onValueChange={setNotificationsEnabled}
-              trackColor={{ false: '#404040', true: '#4a5cdb' }}
-              thumbColor={notificationsEnabled ? '#ffffff' : '#888'}
+              trackColor={{ false: COLORS.border, true: COLORS.primary }}
+              thumbColor={notificationsEnabled ? "#ffffff" : COLORS.textMuted}
             />
           </View>
 
@@ -147,31 +184,31 @@ export default function SettingsScreen({ navigation }) {
             <Text style={styles.optionText}>Idioma</Text>
             <View style={styles.optionRight}>
               <Text style={styles.optionValue}>Español</Text>
-              <ArrowLeft color="#888" size={16} style={styles.chevronIcon} />
+              <ArrowLeft color={COLORS.textMuted} size={16} style={styles.chevronIcon} />
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.optionItem} onPress={handlePrivacy}>
             <Shield color="#27ae60" size={20} />
             <Text style={styles.optionText}>Privacidad</Text>
-            <ArrowLeft color="#888" size={16} style={styles.chevronIcon} />
+            <ArrowLeft color={COLORS.textMuted} size={16} style={styles.chevronIcon} />
           </TouchableOpacity>
         </View>
 
         {/* Sección Soporte */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Soporte</Text>
-          
+
           <TouchableOpacity style={styles.optionItem} onPress={handleHelp}>
             <HelpCircle color="#e67e22" size={20} />
             <Text style={styles.optionText}>Ayuda</Text>
-            <ArrowLeft color="#888" size={16} style={styles.chevronIcon} />
+            <ArrowLeft color={COLORS.textMuted} size={16} style={styles.chevronIcon} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.optionItem} onPress={handleAbout}>
-            <Info color="#34495e" size={20} />
+            <Info color="#9b59b6" size={20} />
             <Text style={styles.optionText}>Acerca de PAZ</Text>
-            <ArrowLeft color="#888" size={16} style={styles.chevronIcon} />
+            <ArrowLeft color={COLORS.textMuted} size={16} style={styles.chevronIcon} />
           </TouchableOpacity>
         </View>
 
@@ -182,139 +219,85 @@ export default function SettingsScreen({ navigation }) {
             <Text style={styles.logoutText}>Cerrar Sesión</Text>
           </TouchableOpacity>
         </View>
-
       </ScrollView>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navButton} onPress={goToHome}>
-          <Home color="#888" size={24} />
+      <View style={globalStyles.bottomNav}>
+        <TouchableOpacity style={globalStyles.navButton} onPress={goToHome}>
+          <Home color={COLORS.textMuted} size={24} />
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.navButton} onPress={goToCreateStory}>
-          <Plus color="#888" size={24} />
+
+        <TouchableOpacity style={globalStyles.navButton} onPress={goToCreateStory}>
+          <Plus color={COLORS.textMuted} size={24} />
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.navButton} onPress={goToProfile}>
-          <User color="#4a5cdb" size={24} />
+
+        <TouchableOpacity style={globalStyles.navButton} onPress={goToProfile}>
+          <User color={COLORS.primary} size={24} />
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#040813',
-  },
-  
-  loadingText: {
-    color: 'white',
-    fontFamily: 'Poppins_400Regular',
-    textAlign: 'center',
-    marginTop: 50,
-  },
-  
-  // Header
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 15,
-  },
-  backButton: {
-    padding: 5,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontFamily: 'Poppins_700Bold',
-    color: 'white',
-  },
-  placeholder: {
-    width: 34,
-  },
-  
-  // Content
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  
-  // Sections
   section: {
-    marginBottom: 30,
+    marginBottom: SPACING.xxl,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#888',
-    marginBottom: 15,
-    textTransform: 'uppercase',
+    fontSize: SIZES.large,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.textMuted,
+    marginBottom: SPACING.medium,
+    textTransform: "uppercase",
     letterSpacing: 1,
+    paddingHorizontal: SPACING.large,
   },
-  
-  // Option Items
+
   optionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#111827',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-    borderRadius: 12,
-    marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.card,
+    paddingHorizontal: SPACING.large,
+    paddingVertical: SPACING.large,
+    borderRadius: RADIUS.medium,
+    marginBottom: SPACING.small,
+    marginHorizontal: SPACING.large,
   },
   optionText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    color: 'white',
-    marginLeft: 15,
+    fontSize: SIZES.large,
+    fontFamily: FONTS.regular,
+    color: COLORS.text,
+    marginLeft: SPACING.medium,
     flex: 1,
   },
   optionRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   optionValue: {
-    fontSize: 14,
-    fontFamily: 'Poppins_400Regular',
-    color: '#888',
-    marginRight: 8,
+    fontSize: SIZES.medium,
+    fontFamily: FONTS.regular,
+    color: COLORS.textMuted,
+    marginRight: SPACING.small,
   },
   chevronIcon: {
-    transform: [{ rotate: '180deg' }], // Para que apunte a la derecha
+    transform: [{ rotate: "180deg" }],
   },
-  
-  // Logout
+
   logoutItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#040813',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(231, 76, 60, 0.1)",
+    paddingHorizontal: SPACING.large,
+    paddingVertical: SPACING.large,
+    borderRadius: RADIUS.medium,
     borderWidth: 1,
-    borderColor: '#e74c3c',
+    borderColor: "#e74c3c",
+    marginHorizontal: SPACING.large,
   },
   logoutText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#e74c3c',
-    marginLeft: 15,
+    fontSize: SIZES.large,
+    fontFamily: FONTS.semiBold,
+    color: "#e74c3c",
+    marginLeft: SPACING.medium,
   },
-  
-  // Bottom Navigation
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 15,
-    backgroundColor: '#040813',
-    borderTopColor: '#404040',
-  },
-  navButton: {
-    padding: 10,
-  },
-});
+})

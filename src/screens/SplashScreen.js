@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { View, Text, StyleSheet, Image, StatusBar } from "react-native"
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING } from "../styles/globalStyles"
+import BackgroundImage from "../components/BackgroundImage"
 
 export default function SplashScreen({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -30,6 +31,7 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={[globalStyles.container, globalStyles.centered]}>
+      <BackgroundImage source={require("../../assets/bgSplash.png")} overlay={true} opacity={0.3} />
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
 
       <View style={globalStyles.logoContainer}>

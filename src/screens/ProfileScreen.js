@@ -27,7 +27,7 @@ const mockUserStories = [
     id: 2,
     title: "El pasillo",
     author: "Julia",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+    image: require("../../assets/tecnico1.jpg"),
     likes: 5,
     comments: 2,
     content: "Un largo corredor sin fin, donde los pasos resuenan eternamente...",
@@ -36,7 +36,7 @@ const mockUserStories = [
     id: 3,
     title: "El pasillo oscuro",
     author: "Julia",
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+    image: require("../../assets/tecnico2.jpg"),
     likes: 1,
     comments: 0,
     content: "Otra historia misteriosa del pasillo embrujado...",
@@ -45,7 +45,7 @@ const mockUserStories = [
     id: 4,
     title: "La biblioteca silenciosa",
     author: "Julia",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+    image: require("../../assets/tecnico3.jpg"),
     likes: 8,
     comments: 3,
     content: "Entre los libros polvorientos, algo se mueve en silencio...",
@@ -54,7 +54,7 @@ const mockUserStories = [
     id: 5,
     title: "El aula 301",
     author: "Julia",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?w=400&h=300&fit=crop",
+    image: require("../../assets/unipaz1.jpg"),
     likes: 4,
     comments: 1,
     content: "Nadie sabe por qué el aula 301 siempre está cerrada...",
@@ -186,7 +186,7 @@ export default function ProfileScreen({ navigation }) {
                 style={[globalStyles.gridItem, styles.storyCard]}
                 onPress={() => handleStoryPress(story)}
               >
-                <Image source={{ uri: story.image }} style={globalStyles.storyImageSmall} resizeMode="cover" />
+                <Image source={story.image} style={globalStyles.storyImageSmall} resizeMode="cover" />
 
                 <View style={styles.storyOverlay}>
                   <Text style={styles.storyTitle} numberOfLines={2}>

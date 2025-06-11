@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  Image, 
-  TouchableOpacity, 
-  StatusBar,
-  TextInput 
-} from 'react-native';
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { ArrowLeft, Heart, MessageCircle, Send } from 'lucide-react-native';
+"use client"
+
+import { useState } from "react"
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, TextInput } from "react-native"
+import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
+import { ArrowLeft, Heart, MessageCircle, Send } from "lucide-react-native"
+import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
 
 // Comentarios mock
 const mockComments = [
@@ -18,105 +12,100 @@ const mockComments = [
     id: 1,
     author: "Luis C.",
     text: "Yo creí escuchar algo también por el segundo piso que miedo pana",
-    liked: false
+    liked: false,
   },
   {
     id: 2,
     author: "Juan Ing",
     text: "Buena historia 👍",
-    liked: true
+    liked: true,
   },
   {
     id: 3,
     author: "Julio Profe",
     text: "Así de miedo dan las matemáticas cuando no estudio😅",
-    liked: false
-  }
-];
+    liked: false,
+  },
+]
 
 export default function StoryDetailScreen({ navigation, route }) {
-  const { story } = route.params;
-  const [liked, setLiked] = useState(false);
-  const [newComment, setNewComment] = useState('');
-  const [comments, setComments] = useState(mockComments);
+  const { story } = route.params
+  const [liked, setLiked] = useState(false)
+  const [newComment, setNewComment] = useState("")
+  const [comments, setComments] = useState(mockComments)
 
-  // Cargar fuentes Poppins
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_600SemiBold,
     Poppins_700Bold,
-  });
+  })
 
   const handleLike = () => {
-    setLiked(!liked);
-    console.log('Toggle like for story:', story.id);
-  };
+    setLiked(!liked)
+    console.log("Toggle like for story:", story.id)
+  }
 
   const handleSendComment = () => {
     if (newComment.trim()) {
       const comment = {
         id: comments.length + 1,
-        author: "Tú", // Después será el usuario actual
+        author: "Tú",
         text: newComment,
-        liked: false
-      };
-      setComments([...comments, comment]);
-      setNewComment('');
+        liked: false,
+      }
+      setComments([...comments, comment])
+      setNewComment("")
     }
-  };
+  }
 
   const goBack = () => {
-    navigation.goBack();
-  };
+    navigation.goBack()
+  }
 
-  // Mostrar loading mientras cargan las fuentes
   if (!fontsLoaded) {
-    return <View style={styles.container}><Text style={styles.loadingText}>Cargando...</Text></View>;
+    return (
+      <View style={globalStyles.loadingContainer}>
+        <Text style={globalStyles.loadingText}>Cargando...</Text>
+      </View>
+    )
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="# 040813" />
-      
+    <View style={globalStyles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack}>
+      <View style={globalStyles.header}>
+        <TouchableOpacity style={globalStyles.backButton} onPress={goBack}>
           <ArrowLeft color="white" size={24} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{story.title}</Text>
-        <View style={styles.placeholder} />
+        <Text style={globalStyles.headerTitle}>{story.title}</Text>
+        <View style={globalStyles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Imagen de la historia */}
-        <Image 
-          source={{ uri: story.image }}
-          style={styles.storyImage}
-          resizeMode="cover"
-        />
-        
+      <ScrollView style={globalStyles.content} showsVerticalScrollIndicator={false}>
+        {/* Imagen de la historia - Más pequeña y redondeada */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={typeof story.image === "string" ? { uri: story.image } : story.image}
+            style={styles.storyImage}
+            resizeMode="cover"
+          />
+        </View>
+
         {/* Contenido de la historia */}
         <View style={styles.storyContent}>
           <Text style={styles.storyTitle}>{story.title}</Text>
           <Text style={styles.storyAuthor}>-{story.author}-</Text>
           <Text style={styles.storyText}>{story.content}</Text>
-          
+
           {/* Likes y comentarios */}
           <View style={styles.storyActions}>
-            <TouchableOpacity 
-              style={styles.actionButton}
-              onPress={handleLike}
-            >
-              <Heart 
-                size={20} 
-                color={liked ? "#e74c3c" : "#888"} 
-                fill={liked ? "#e74c3c" : "none"}
-              />
-              <Text style={[styles.actionText, liked && styles.likedText]}>
-                {story.likes + (liked ? 1 : 0)}
-              </Text>
+            <TouchableOpacity style={styles.actionButton} onPress={handleLike}>
+              <Heart size={20} color={liked ? "#e74c3c" : "#888"} fill={liked ? "#e74c3c" : "none"} />
+              <Text style={[styles.actionText, liked && styles.likedText]}>{story.likes + (liked ? 1 : 0)}</Text>
             </TouchableOpacity>
-            
+
             <View style={styles.actionButton}>
               <MessageCircle color="#888" size={20} />
               <Text style={styles.actionText}>{comments.length}</Text>
@@ -127,7 +116,7 @@ export default function StoryDetailScreen({ navigation, route }) {
         {/* Sección de comentarios */}
         <View style={styles.commentsSection}>
           <Text style={styles.commentsTitle}>Comentarios</Text>
-          
+
           {comments.map((comment) => (
             <View key={comment.id} style={styles.commentItem}>
               <Text style={styles.commentAuthor}>{comment.author}</Text>
@@ -147,159 +136,127 @@ export default function StoryDetailScreen({ navigation, route }) {
           onChangeText={setNewComment}
           multiline
         />
-        <TouchableOpacity 
-          style={styles.sendButton}
-          onPress={handleSendComment}
-        >
+        <TouchableOpacity style={styles.sendButton} onPress={handleSendComment}>
           <Send color="#4a5cdb" size={20} />
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#040813',
-  },
-  
-  loadingText: {
-    color: 'white',
-    fontFamily: 'Poppins_400Regular',
-    textAlign: 'center',
-    marginTop: 50,
-  },
-  
-  // Header
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 15,
-  },
-  backButton: {
-    padding: 5,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins_600SemiBold',
-    color: 'white',
-    flex: 1,
-    textAlign: 'center',
-  },
-  placeholder: {
-    width: 34, // Para centrar el título
-  },
-  
-  // Content
-  content: {
-    flex: 1,
+  // Contenedor de imagen más pequeño y redondeado
+  imageContainer: {
+    marginHorizontal: SPACING.large,
+    marginBottom: SPACING.large,
+    borderRadius: RADIUS.large,
+    overflow: "hidden",
+    backgroundColor: COLORS.card,
   },
   storyImage: {
-    width: '100%',
-    height: 250,
+    width: "100%",
+    height: 200, // Más pequeña que antes (era 250)
+    borderRadius: RADIUS.large,
   },
   storyContent: {
-    padding: 20,
+    paddingHorizontal: SPACING.large,
   },
   storyTitle: {
-    fontSize: 22,
-    fontFamily: 'Poppins_700Bold',
-    color: 'white',
-    marginBottom: 8,
+    fontSize: SIZES.title,
+    fontFamily: FONTS.bold,
+    color: COLORS.text,
+    marginBottom: SPACING.small,
   },
   storyAuthor: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    color: '#888',
-    marginBottom: 20,
+    fontSize: SIZES.large,
+    fontFamily: FONTS.regular,
+    color: COLORS.textMuted,
+    marginBottom: SPACING.large,
   },
   storyText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    color: '#ccc',
+    fontSize: SIZES.large,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
     lineHeight: 24,
-    marginBottom: 25,
+    marginBottom: SPACING.xl,
   },
-  
+
   // Actions
   storyActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingBottom: SPACING.large,
     borderBottomWidth: 1,
-    borderBottomColor: '#404040',
+    borderBottomColor: COLORS.border,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 25,
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: SPACING.xl,
   },
   actionText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    color: '#888',
-    marginLeft: 8,
+    fontSize: SIZES.large,
+    fontFamily: FONTS.regular,
+    color: COLORS.textMuted,
+    marginLeft: SPACING.small,
   },
   likedText: {
-    color: '#e74c3c',
+    color: "#e74c3c",
   },
-  
+
   // Comments
   commentsSection: {
-    padding: 20,
-    paddingTop: 25,
+    paddingHorizontal: SPACING.large,
+    paddingTop: SPACING.xl,
   },
   commentsTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins_600SemiBold',
-    color: 'white',
-    marginBottom: 20,
+    fontSize: SIZES.xl,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.text,
+    marginBottom: SPACING.large,
   },
   commentItem: {
-    backgroundColor: '#111827',
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.medium,
+    padding: SPACING.medium,
+    marginBottom: SPACING.medium,
   },
   commentAuthor: {
-    fontSize: 14,
-    fontFamily: 'Poppins_600SemiBold',
-    color: '#4a5cdb',
-    marginBottom: 5,
+    fontSize: SIZES.medium,
+    fontFamily: FONTS.semiBold,
+    color: COLORS.primary,
+    marginBottom: SPACING.xs,
   },
   commentText: {
-    fontSize: 14,
-    fontFamily: 'Poppins_400Regular',
-    color: '#ccc',
+    fontSize: SIZES.medium,
+    fontFamily: FONTS.regular,
+    color: COLORS.textSecondary,
     lineHeight: 20,
   },
-  
+
   // Comment Input
   commentInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    backgroundColor: '#040813',
-    borderTopColor: '#404040',
+    flexDirection: "row",
+    alignItems: "flex-end",
+    paddingHorizontal: SPACING.large,
+    paddingVertical: SPACING.medium,
+    backgroundColor: COLORS.background,
+    borderTopColor: COLORS.border,
+    borderTopWidth: 1,
   },
   commentInput: {
     flex: 1,
-    backgroundColor: '#111827',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    color: 'white',
-    fontSize: 14,
-    fontFamily: 'Poppins_400Regular',
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.large,
+    paddingHorizontal: SPACING.medium,
+    paddingVertical: SPACING.small,
+    color: COLORS.text,
+    fontSize: SIZES.medium,
+    fontFamily: FONTS.regular,
     maxHeight: 100,
-    marginRight: 10,
+    marginRight: SPACING.small,
   },
   sendButton: {
-    padding: 10,
+    padding: SPACING.small,
   },
-});
+})

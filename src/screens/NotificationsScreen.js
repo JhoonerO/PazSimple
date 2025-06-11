@@ -8,7 +8,7 @@ import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/g
 import { useToast } from "../hooks/useToast"
 import Toast from "../components/Toast"
 
-// Datos mock de notificaciones
+// Datos mock de notificaciones que coinciden con las historias reales
 const mockNotifications = [
   {
     id: 1,
@@ -20,6 +20,11 @@ const mockNotifications = [
     story: {
       title: "El pasillo",
       id: 2,
+      image: require("../../assets/tecnico1.jpg"),
+      author: "Julia",
+      content: "Un largo corredor sin fin, donde los pasos resuenan eternamente...",
+      likes: 5,
+      comments: 2,
     },
     time: "2h",
     read: false,
@@ -34,6 +39,11 @@ const mockNotifications = [
     story: {
       title: "La niña de los baños",
       id: 1,
+      image: require("../../assets/tecnico1.1.jpg"),
+      author: "Andrés",
+      content: "Dicen que en el baño del cuarto piso, al fondo, aparece una niña llamada Lucía...",
+      likes: 3,
+      comments: 1,
     },
     comment: "Me encantó tu historia, muy bien narrada!",
     time: "5h",
@@ -47,8 +57,13 @@ const mockNotifications = [
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     },
     story: {
-      title: "La niña de los baños",
-      id: 1,
+      title: "Misterio en UniPaz",
+      id: 3,
+      image: require("../../assets/unipaz1.jpg"),
+      author: "Carlos",
+      content: "Otra historia misteriosa del campus universitario...",
+      likes: 1,
+      comments: 0,
     },
     time: "1d",
     read: true,
@@ -61,8 +76,13 @@ const mockNotifications = [
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
     },
     story: {
-      title: "El pasillo",
-      id: 2,
+      title: "El laboratorio abandonado",
+      id: 4,
+      image: require("../../assets/tecnico2.jpg"),
+      author: "María",
+      content: "Dicen que en el laboratorio del segundo piso, después de medianoche, los equipos se encienden solos...",
+      likes: 3,
+      comments: 1,
     },
     comment: "Esto me recuerda a mi escuela, también había historias similares",
     time: "2d",
@@ -110,7 +130,8 @@ export default function NotificationsScreen({ navigation }) {
 
     // Navegar según el tipo de notificación
     if (notification.type === "like" || notification.type === "comment") {
-      navigation.navigate("StoryDetail", { storyId: notification.story.id })
+      // Pasar la historia completa en lugar de solo el ID
+      navigation.navigate("StoryDetail", { story: notification.story })
     }
   }
 
@@ -131,7 +152,7 @@ export default function NotificationsScreen({ navigation }) {
             <Bell color={COLORS.primary} size={24} />
           </View>
         ) : (
-          <Image source={{ uri: item.user.avatar }} style={styles.avatar} />
+          <Image source={item.user.avatar} style={styles.avatar} />
         )}
 
         <View style={styles.notificationContent}>

@@ -19,6 +19,7 @@ import { ArrowLeft, Image as ImageIcon, Edit3, User, Home, Plus, User as UserIco
 import * as ImagePicker from "expo-image-picker"
 import Toast from "../components/Toast"
 import { useToast } from "../hooks/useToast"
+import { useStories } from "../hooks/useStories"
 import { globalStyles, COLORS, SPACING, RADIUS } from "../styles/globalStyles"
 
 export default function CreateStoryScreen({ navigation }) {
@@ -26,8 +27,10 @@ export default function CreateStoryScreen({ navigation }) {
   const [content, setContent] = useState("")
   const [author, setAuthor] = useState("")
   const [selectedImage, setSelectedImage] = useState(null)
+  const [isPublishing, setIsPublishing] = useState(false)
 
   const { toastConfig, showToast, hideToast } = useToast()
+  const { addStory } = useStories()
 
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
@@ -66,7 +69,7 @@ export default function CreateStoryScreen({ navigation }) {
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim()) {
       showToast({
         type: "error",
@@ -104,19 +107,50 @@ export default function CreateStoryScreen({ navigation }) {
       return
     }
 
-    showToast({
-      type: "success",
-      title: "🚀 ¡Historia Publicada!",
-      message: `"${title}" ya está disponible en PAZ ✨`,
-      duration: 4000,
-      onHide: () => {
-        setTitle("")
-        setContent("")
-        setAuthor("")
-        setSelectedImage(null)
-        setTimeout(() => navigation.replace("Home"), 500)
-      },
-    })
+    setIsPublishing(true)
+
+    try {
+      // Delay más corto para subida más rápida
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      // Crear el preview (primeras palabras del contenido)
+      const preview = content.length > 50 ? content.substring(0, 50) + "..." : content
+
+      const newStory = {
+        title: title.trim(),
+        content: content.trim(),
+        author: author.trim(),
+        preview,
+        image: selectedImage,
+      }
+
+      await addStory(newStory)
+
+      showToast({
+        type: "success",
+        title: "🚀 ¡Historia Publicada!",
+        message: `"${title}" ya está disponible en PAZ ✨`,
+        duration: 2000,
+      })
+
+      // Limpiar formulario inmediatamente
+      setTitle("")
+      setContent("")
+      setAuthor("")
+      setSelectedImage(null)
+
+      // Navegar de vuelta al Home sin delay
+      setTimeout(() => navigation.replace("Home"), 1000)
+    } catch (error) {
+      showToast({
+        type: "error",
+        title: "❌ Error",
+        message: "No se pudo publicar la historia. Inténtalo de nuevo.",
+        duration: 3000,
+      })
+    } finally {
+      setIsPublishing(false)
+    }
   }
 
   const handleCancel = () => {
@@ -135,6 +169,8 @@ export default function CreateStoryScreen({ navigation }) {
       },
     ])
   }
+
+  const goToProfile = () => navigation.replace("Profile")
 
   if (!fontsLoaded) {
     return (
@@ -166,7 +202,7 @@ export default function CreateStoryScreen({ navigation }) {
       </View>
 
       <ScrollView style={globalStyles.content} showsVerticalScrollIndicator={false}>
-        <TouchableOpacity style={styles.imageUploadContainer} onPress={pickImage}>
+        <TouchableOpacity style={styles.imageUploadContainer} onPress={pickImage} disabled={isPublishing}>
           {selectedImage ? (
             <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
           ) : (
@@ -187,6 +223,7 @@ export default function CreateStoryScreen({ navigation }) {
               value={title}
               onChangeText={setTitle}
               maxLength={50}
+              editable={!isPublishing}
             />
           </View>
 
@@ -199,6 +236,7 @@ export default function CreateStoryScreen({ navigation }) {
             multiline
             numberOfLines={8}
             textAlignVertical="top"
+            editable={!isPublishing}
           />
 
           <View style={globalStyles.inputContainer}>
@@ -210,18 +248,27 @@ export default function CreateStoryScreen({ navigation }) {
               value={author}
               onChangeText={setAuthor}
               maxLength={30}
+              editable={!isPublishing}
             />
           </View>
         </View>
       </ScrollView>
 
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={globalStyles.secondaryButton} onPress={handleCancel}>
+        <TouchableOpacity
+          style={[globalStyles.secondaryButton, isPublishing && styles.disabledButton]}
+          onPress={handleCancel}
+          disabled={isPublishing}
+        >
           <Text style={globalStyles.primaryButtonText}>Cancelar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={globalStyles.primaryButton} onPress={handleSave}>
-          <Text style={globalStyles.primaryButtonText}>Guardar</Text>
+        <TouchableOpacity
+          style={[globalStyles.primaryButton, isPublishing && styles.publishingButton]}
+          onPress={handleSave}
+          disabled={isPublishing}
+        >
+          <Text style={globalStyles.primaryButtonText}>{isPublishing ? "Publicando..." : "Publicar"}</Text>
         </TouchableOpacity>
       </View>
 
@@ -232,7 +279,7 @@ export default function CreateStoryScreen({ navigation }) {
         <TouchableOpacity style={globalStyles.navButton}>
           <Plus color={COLORS.primary} size={24} />
         </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton}>
+        <TouchableOpacity style={globalStyles.navButton} onPress={goToProfile}>
           <UserIcon color={COLORS.textMuted} size={24} />
         </TouchableOpacity>
       </View>
@@ -262,5 +309,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.large,
     paddingVertical: SPACING.large,
     gap: SPACING.medium,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  publishingButton: {
+    backgroundColor: COLORS.success,
   },
 })

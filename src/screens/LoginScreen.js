@@ -4,6 +4,7 @@ import { useState } from "react"
 import { View, Text, TextInput, TouchableOpacity, StatusBar, Alert, Image } from "react-native"
 import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { globalStyles, COLORS } from "../styles/globalStyles"
+import BackgroundImage from "../components/BackgroundImage"
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("")
@@ -36,6 +37,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={[globalStyles.container, globalStyles.centered]}>
+      <BackgroundImage source={require("../../assets/bgLoginRegister.png")} overlay={true} opacity={0.4} />
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
 
       <Text style={[globalStyles.headerTitle, { position: "absolute", top: 60 }]}>Login</Text>
