@@ -19,10 +19,12 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash" // Inicia con el Splash
+        initialRouteName="Splash"
         screenOptions={{
-          headerShown: false, // Sin headers por defecto (nuestras pantallas ya tienen sus títulos)
-          animation: "slide_from_right", // Animación suave entre pantallas
+          headerShown: false,
+          animation: "default", // Animación por defecto más suave
+          gestureEnabled: true,
+          gestureDirection: "horizontal",
         }}
       >
         {/* Pantalla de Splash */}
@@ -31,7 +33,8 @@ export default function AppNavigator() {
           component={SplashScreen}
           options={{
             headerShown: false,
-            gestureEnabled: false, // No se puede swipe back desde splash
+            gestureEnabled: false,
+            animation: "fade", // Fade para splash
           }}
         />
 
@@ -41,7 +44,8 @@ export default function AppNavigator() {
           component={LoginScreen}
           options={{
             headerShown: false,
-            gestureEnabled: false, // No se puede volver al splash
+            gestureEnabled: false,
+            animation: "slide_from_right",
           }}
         />
 
@@ -51,7 +55,8 @@ export default function AppNavigator() {
           component={RegisterScreen}
           options={{
             headerShown: false,
-            gestureEnabled: true, // Sí se puede volver al login con swipe
+            gestureEnabled: true,
+            animation: "slide_from_right", // Viene desde la derecha
           }}
         />
 
@@ -61,7 +66,8 @@ export default function AppNavigator() {
           component={HomeScreen}
           options={{
             headerShown: false,
-            gestureEnabled: false, // No se puede hacer gesto back desde Home
+            gestureEnabled: false,
+            animation: "fade", // Fade para pantallas principales
           }}
         />
 
@@ -71,7 +77,9 @@ export default function AppNavigator() {
           component={StoryDetailScreen}
           options={{
             headerShown: false,
-            gestureEnabled: true, // Sí se puede volver al feed
+            gestureEnabled: true,
+            animation: "slide_from_right", // Viene desde la derecha
+            gestureDirection: "horizontal",
           }}
         />
 
@@ -81,7 +89,9 @@ export default function AppNavigator() {
           component={CreateStoryScreen}
           options={{
             headerShown: false,
-            gestureEnabled: false, // No se puede hacer gesto back desde CreateStory
+            gestureEnabled: true,
+            animation: "slide_from_bottom", // Viene desde abajo (modal style)
+            presentation: "modal",
           }}
         />
 
@@ -91,7 +101,8 @@ export default function AppNavigator() {
           component={ProfileScreen}
           options={{
             headerShown: false,
-            gestureEnabled: false, // No se puede hacer gesto back desde Profile
+            gestureEnabled: false,
+            animation: "fade", // Fade para pantallas principales
           }}
         />
 
@@ -101,7 +112,8 @@ export default function AppNavigator() {
           component={SettingsScreen}
           options={{
             headerShown: false,
-            gestureEnabled: true, // Sí se puede volver al Profile
+            gestureEnabled: true,
+            animation: "slide_from_right", // Viene desde la derecha
           }}
         />
 
@@ -111,7 +123,8 @@ export default function AppNavigator() {
           component={LikedStoriesScreen}
           options={{
             headerShown: false,
-            gestureEnabled: true, // Sí se puede volver al Profile
+            gestureEnabled: true,
+            animation: "slide_from_right", // Viene desde la derecha
           }}
         />
 
@@ -121,7 +134,8 @@ export default function AppNavigator() {
           component={NotificationsScreen}
           options={{
             headerShown: false,
-            gestureEnabled: true, // Sí se puede volver atrás
+            gestureEnabled: true,
+            animation: "slide_from_right", // Viene desde la derecha
           }}
         />
       </Stack.Navigator>

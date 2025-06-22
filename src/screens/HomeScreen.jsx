@@ -135,7 +135,7 @@ export default function HomeScreen({ navigation }) {
 
       {/* Bottom Navigation */}
       <View style={globalStyles.bottomNav}>
-        <TouchableOpacity style={globalStyles.navButton}>
+        <TouchableOpacity style={globalStyles.navButton} onPress={() => console.log("Already on Home")}>
           <Home color={COLORS.primary} size={24} />
         </TouchableOpacity>
         <TouchableOpacity style={globalStyles.navButton} onPress={goToCreateStory}>
