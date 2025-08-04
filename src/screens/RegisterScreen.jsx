@@ -41,62 +41,62 @@ export default function RegisterScreen({ navigation }) {
     escuela_ciencias: {
       name: "Escuela de Ciencias",
       careers: [
-        { label: "Administración de Negocios Internacionales - (SNIES 104323)", value: "admin_negocios" },
-        { label: "Ingeniería Informática - (SNIES 105014)", value: "ing_informatica" },
-        { label: "Licenciatura en Artes - (SNIES 54117)", value: "lic_artes" },
-        { label: "Química - (SNIES 103209)", value: "quimica" },
+        { label: "Administración de Negocios Internacionales", value: "admin_negocios" },
+        { label: "Ingeniería Informática", value: "ing_informatica" },
+        { label: "Licenciatura en Artes", value: "lic_artes" },
+        { label: "Química", value: "quimica" },
       ],
     },
     escuela_ciencias_sociales: {
       name: "Escuela de Ciencias Sociales y de las Comunicaciones",
       careers: [
-        { label: "Comunicación Social - (SNIES 104544)", value: "comunicacion_social" },
-        { label: "Trabajo Social - (SNIES 90876)", value: "trabajo_social" },
-        { label: "Derecho - (SNIES 117530)", value: "derecho" },
+        { label: "Comunicación Social", value: "comunicacion_social" },
+        { label: "Trabajo Social", value: "trabajo_social" },
+        { label: "Derecho", value: "derecho" },
       ],
     },
     escuela_ing_agroindustrial: {
       name: "Escuela Ingeniería Agroindustrial",
       careers: [
         {
-          label: "Técnico en Extracción de Biomasa Enérgetica - Modalidad presencial (SNIES 105897)",
+          label: "Técnico en Extracción de Biomasa Enérgetica - Modalidad presencial",
           value: "tecnico_biomasa",
         },
         {
-          label: "Tecnología en Procesamiento de Alimentos - Modalidad a distancia (SNIES 105217)",
+          label: "Tecnología en Procesamiento de Alimentos - Modalidad a distancia",
           value: "tech_alimentos",
         },
-        { label: "Ingeniería Agroindustrial - (SNIES 1742)", value: "ing_agroindustrial" },
-        { label: "Profesional en Turismo - (SNIES )", value: "prof_turismo" },
+        { label: "Ingeniería Agroindustrial", value: "ing_agroindustrial" },
+        { label: "Profesional en Turismo", value: "prof_turismo" },
       ],
     },
     escuela_ing_agronomica: {
       name: "Escuela Ingeniería Agronómica",
-      careers: [{ label: "Ingeniería Agronómica - (SNIES 3139)", value: "ing_agronomica" }],
+      careers: [{ label: "Ingeniería Agronómica", value: "ing_agronomica" }],
     },
     escuela_ing_ambiental: {
       name: "Escuela Ingeniería Ambiental y de Saneamiento",
       careers: [
-        { label: "Ingeniería Civil - (SNIES 117462)", value: "ing_civil" },
-        { label: "Tecnología en Obras Civiles - (SNIES 104768)", value: "tech_obras_civiles" },
-        { label: "Ingeniería Ambiental y de Saneamiento - (SNIES 3127)", value: "ing_ambiental" },
+        { label: "Ingeniería Civil", value: "ing_civil" },
+        { label: "Tecnología en Obras Civiles", value: "tech_obras_civiles" },
+        { label: "Ingeniería Ambiental y de Saneamiento", value: "ing_ambiental" },
       ],
     },
     escuela_ing_produccion: {
       name: "Escuela Ingeniería de Producción",
       careers: [
         {
-          label: "Tecnología en Operación de Sistemas Electromecánicos (SNIES 106413)",
+          label: "Tecnología en Operación de Sistemas Electromecánicos",
           value: "tech_electromecanicos",
         },
-        { label: "Tecnología en Seguridad y Salud en el Trabajo (SNIES 103526)", value: "tech_seguridad" },
-        { label: "Ingeniería de Producción - (SNIES 102479)", value: "ing_produccion" },
-        { label: "Ingeniería en Seguridad y Salud en el Trabajo - (SNIES 107300)", value: "ing_seguridad" },
+        { label: "Tecnología en Seguridad y Salud en el Trabajo", value: "tech_seguridad" },
+        { label: "Ingeniería de Producción", value: "ing_produccion" },
+        { label: "Ingeniería en Seguridad y Salud en el Trabajo", value: "ing_seguridad" },
       ],
     },
     escuela_medicina_veterinaria: {
       name: "Escuela de Medicina Veterinaria y Zootecnia",
-      careers: [{ label: "Medicina Veterinaria y Zootecnia - (SNIES 1741)", value: "medicina_veterinaria" }],
+      careers: [{ label: "Medicina Veterinaria y Zootecnia", value: "medicina_veterinaria" }],
     },
   }
 
