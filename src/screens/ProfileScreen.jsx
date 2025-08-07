@@ -117,13 +117,6 @@ export default function ProfileScreen({ navigation }) {
   const goToCreateStory = () => navigation.navigate("CreateStory")
   const goToLikedStories = () => navigation.navigate("LikedStories")
 
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
-  }
 
   return (
     <View style={globalStyles.container}>
@@ -205,18 +198,6 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
-
-      <View style={globalStyles.bottomNav}>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToHome}>
-          <Home color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToCreateStory}>
-          <Plus color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton}>
-          <User color={COLORS.primary} size={24} />
-        </TouchableOpacity>
-      </View>
     </View>
   )
 }
