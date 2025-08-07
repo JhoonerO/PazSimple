@@ -2,19 +2,15 @@
 
 import { useState } from "react"
 import { View, Text, TextInput, TouchableOpacity, StatusBar, Alert, Image } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { globalStyles, COLORS } from "../styles/globalStyles"
 import BackgroundImage from "../components/BackgroundImage"
+import { useNavigation } from "@react-navigation/native"
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const handleLogin = () => {
     if (!username.trim() || !password.trim()) {
@@ -22,18 +18,15 @@ export default function LoginScreen({ navigation }) {
       return
     }
     console.log("Login attempt:", { username, password })
-    navigation.replace("Home")
+    navigation.navigate("Main")
   }
+
+  // Temporal
+  setTimeout(() => {
+    navigation.navigate("Main")
+  }, 1000)
 
   const goToRegister = () => navigation.navigate("Register")
-
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
-  }
 
   return (
     <View style={[globalStyles.container, globalStyles.centered]}>

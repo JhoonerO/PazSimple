@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
-import { ArrowLeft, Settings, Camera, BookOpen, Heart, Home, Plus, User } from "lucide-react-native"
+import { ArrowLeft, Settings, Camera, BookOpen, Heart } from "lucide-react-native"
 import * as ImagePicker from "expo-image-picker"
 import Toast from "../components/Toast"
 import { useToast } from "../hooks/useToast"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
+import { useNavigation } from "@react-navigation/native"
 
 // Datos mock del usuario
 const mockUser = {
@@ -61,17 +61,13 @@ const mockUserStories = [
   },
 ]
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
   const [currentUser] = useState(mockUser)
   const [currentProfileImage, setCurrentProfileImage] = useState(mockUser.avatar)
 
   const { toastConfig, showToast, hideToast } = useToast()
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const handleStoryPress = (story) => {
     navigation.navigate("StoryDetail", { story })
@@ -112,11 +108,7 @@ export default function ProfileScreen({ navigation }) {
     }
   }
 
-  const goBack = () => navigation.replace("Home")
-  const goToHome = () => navigation.replace("Home")
-  const goToCreateStory = () => navigation.navigate("CreateStory")
   const goToLikedStories = () => navigation.navigate("LikedStories")
-
 
   return (
     <View style={globalStyles.container}>
@@ -132,9 +124,6 @@ export default function ProfileScreen({ navigation }) {
       />
 
       <View style={globalStyles.header}>
-        <TouchableOpacity style={globalStyles.backButton} onPress={goBack}>
-          <ArrowLeft color="white" size={24} />
-        </TouchableOpacity>
         <Text style={globalStyles.headerTitle}>Perfil</Text>
         <TouchableOpacity style={globalStyles.navButton} onPress={handleSettings}>
           <Settings color="white" size={24} />

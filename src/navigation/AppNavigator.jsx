@@ -1,9 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator, TransitionSpecs, SceneStyleInterpolators } from "@react-navigation/bottom-tabs";
 import { ActivityIndicator, View } from 'react-native';
 import React from "react";
 import { enableFreeze } from "react-native-screens";
-import NavBar from "./NavBar";
+import { Home, Plus, User } from "lucide-react-native"
+import { COLORS, SIZES } from "../styles/globalStyles"
 
 enableFreeze(true);
 
@@ -19,22 +21,14 @@ const SettingsScreen = React.lazy(() => import("../screens/SettingsScreen"));
 const LikedStoriesScreen = React.lazy(() => import("../screens/LikedStoriesScreen"));
 const NotificationsScreen = React.lazy(() => import("../screens/NotificationsScreen"));
 
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-// Configuración común para pantallas modales
-const modalOptions = {
-  headerShown: false,
-  gestureEnabled: true,
-  animation: "slide_from_bottom",
-  presentation: "transparentModal",
-  cardOverlayEnabled: true
-};
 
 const withNavBarOptions = {
   headerShown: false,
   gestureEnabled: true,
-  animation: "fade",
-  contentStyle: { paddingBottom: 60 } // Espacio para el NavBar
+  transitionSpec: TransitionSpecs.ShiftSpec,
+  sceneStyleInterpolator: SceneStyleInterpolators.forShift,
 };
 
 const FallbackComponent = () => (
@@ -43,39 +37,62 @@ const FallbackComponent = () => (
   </View>
 );
 
-const MainStack = () => (
-  <>
-    <Stack.Navigator
+function MainTabs(){
+  return(
+    <Tab.Navigator
       screenOptions={{
-        animation: 'fade',
-        freezeOnBlur: true,
+        animation: 'shift',
+        freezeOnBlur: false,
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: COLORS.background,
+          borderTopColor: COLORS.border,
+          borderTopWidth: 0.5,
+        },
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.textMuted,
+        tabBarLabelStyle: {
+          fontSize: SIZES.small,
+        },
       }}
     >
-      {/* Pantallas principales con NavBar */}
-      <Stack.Screen
-        name="Home"
+      <Tab.Screen
+        name="Inicio"
         component={HomeScreen}
-        options={withNavBarOptions}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Home size={size} color={color} />
+          ),
+          headerShown: false,
+          ...withNavBarOptions,
+        }}
       />
-      <Stack.Screen
-        name="Profile"
+      <Tab.Screen
+        name="Crear historia"
+        component={CreateStoryScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Plus size={size} color={color} />
+          ),
+          headerShown: false,
+          ...withNavBarOptions,
+        }}
+      />
+      <Tab.Screen
+        name="Perfil"
         component={ProfileScreen}
-        options={withNavBarOptions}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <User size={size} color={color} />
+          ),
+          headerShown: false,
+          ...withNavBarOptions,
+        }}
       />
-      <Stack.Screen
-        name="LikedStories"
-        component={LikedStoriesScreen}
-        options={withNavBarOptions}
-      />
-      <Stack.Screen
-        name="Notifications"
-        component={NotificationsScreen}
-        options={withNavBarOptions}
-      />
-    </Stack.Navigator>
-    <NavBar />
-  </>
-);
+    </Tab.Navigator>
+  )
+}
 
 const AppNavigator = () => {
   return (
@@ -85,7 +102,6 @@ const AppNavigator = () => {
           initialRouteName="Splash"
           screenOptions={{
             headerShown: false,
-            animation: 'fade',
           }}
         >
           {/* Pantallas sin NavBar */}
@@ -95,40 +111,45 @@ const AppNavigator = () => {
             options={{ gestureEnabled: false }}
           />
           <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={modalOptions}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={modalOptions}
-          />
-          
-          {/* Pantallas modales */}
-          <Stack.Screen
-            name="StoryDetail"
-            component={StoryDetailScreen}
-            options={modalOptions}
-          />
-          <Stack.Screen
-            name="CreateStory"
-            component={CreateStoryScreen}
-            options={{
-              ...modalOptions,
-              presentation: "modal"
-            }}
+            name="Notifications"
+            component={NotificationsScreen}
+            options={withNavBarOptions}
           />
           <Stack.Screen
             name="Settings"
             component={SettingsScreen}
-            options={modalOptions}
+            options={withNavBarOptions}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={withNavBarOptions}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={withNavBarOptions}
+          />
+          <Stack.Screen
+            name="StoryDetail"
+            component={StoryDetailScreen}
+            options={withNavBarOptions}
+          />
+          <Stack.Screen
+            name="LikedStories"
+            component={LikedStoriesScreen}
+            options={withNavBarOptions}
+          />
+          <Stack.Screen
+            name="CreateStory"
+            component={CreateStoryScreen}
+            options={withNavBarOptions}
           />
           
           {/* Grupo principal con NavBar */}
           <Stack.Screen
             name="Main"
-            component={MainStack}
+            component={MainTabs}
             options={{ gestureEnabled: false }}
           />
         </Stack.Navigator>

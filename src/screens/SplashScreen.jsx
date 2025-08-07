@@ -2,32 +2,20 @@
 
 import { useEffect } from "react"
 import { View, Text, StyleSheet, Image, StatusBar } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING } from "../styles/globalStyles"
 import BackgroundImage from "../components/BackgroundImage"
+import { useNavigation } from "@react-navigation/native"
 
-export default function SplashScreen({ navigation }) {
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_700Bold,
-  })
+const SplashScreen = () => {
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (fontsLoaded) {
-      const timer = setTimeout(() => {
-        navigation.replace("Login")
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [navigation, fontsLoaded])
+    const timer = setTimeout(() => {
+      navigation.navigate("Login")
+    }, 2000);
 
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
-  }
+    return () => clearTimeout(timer)
+  }, [navigation])
 
   return (
     <View style={[globalStyles.container, globalStyles.centered]}>
@@ -60,3 +48,5 @@ const styles = StyleSheet.create({
     bottom: 100,
   },
 })
+
+export default SplashScreen;

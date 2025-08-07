@@ -1,28 +1,21 @@
 "use client"
 
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, RefreshControl } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
-import { Bell, Heart, MessageCircle, Home, Plus, User } from "lucide-react-native"
+import { Bell, Heart, MessageCircle } from "lucide-react-native"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING } from "../styles/globalStyles"
 import { useStories } from "../hooks/useStories"
 import { useState } from "react"
-import Layout from "../components/Layout"
+import { useNavigation } from "@react-navigation/native"
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const { stories, loading, refreshStories } = useStories()
   const [refreshing, setRefreshing] = useState(false)
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const handleStoryPress = (story) => navigation.navigate("StoryDetail", { story })
   const handleLike = (storyId) => console.log("Like story:", storyId)
   const handleComment = (storyId) => console.log("Comment story:", storyId)
-  const goToCreateStory = () => navigation.navigate("CreateStory")
-  const goToProfile = () => navigation.navigate("Profile")
   const goToNotifications = () => navigation.navigate("Notifications")
 
   const onRefresh = async () => {

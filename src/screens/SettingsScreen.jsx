@@ -6,7 +6,7 @@ import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } fr
 import { ArrowLeft, Edit3, Bell, Shield, HelpCircle, Info, LogOut, Globe, Home, Plus, User } from "lucide-react-native"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
 
-export default function SettingsScreen({ navigation }) {
+export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
   const [fontsLoaded] = useFonts({

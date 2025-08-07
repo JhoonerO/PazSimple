@@ -14,15 +14,15 @@ import {
   Platform,
   StyleSheet,
 } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
-import { ArrowLeft, Image as ImageIcon, Edit3, User, Home, Plus, User as UserIcon } from "lucide-react-native"
+import { ArrowLeft, Image as ImageIcon, Edit3, User, Grid } from "lucide-react-native"
 import * as ImagePicker from "expo-image-picker"
 import Toast from "../components/Toast"
 import { useToast } from "../hooks/useToast"
 import { useStories } from "../hooks/useStories"
 import { globalStyles, COLORS, SPACING, RADIUS } from "../styles/globalStyles"
+import { useNavigation } from "@react-navigation/native"
 
-export default function CreateStoryScreen({ navigation }) {
+export default function CreateStoryScreen() {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [author, setAuthor] = useState("")
@@ -32,11 +32,7 @@ export default function CreateStoryScreen({ navigation }) {
   const { toastConfig, showToast, hideToast } = useToast()
   const { addStory } = useStories()
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -140,7 +136,7 @@ export default function CreateStoryScreen({ navigation }) {
       setSelectedImage(null)
 
       // Navegar de vuelta al Home sin delay
-      setTimeout(() => navigation.replace("Home"), 1000)
+      setTimeout(() => navigation.navigate("Home"), 1000)
     } catch (error) {
       showToast({
         type: "error",
@@ -164,20 +160,10 @@ export default function CreateStoryScreen({ navigation }) {
           setContent("")
           setAuthor("")
           setSelectedImage(null)
-          navigation.replace("Home")
+          navigation.navigate("Home")
         },
       },
     ])
-  }
-
-  const goToProfile = () => navigation.replace("Profile")
-
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
   }
 
   return (
@@ -194,11 +180,7 @@ export default function CreateStoryScreen({ navigation }) {
       />
 
       <View style={globalStyles.header}>
-        <TouchableOpacity style={globalStyles.backButton} onPress={() => navigation.replace("Home")}>
-          <ArrowLeft color="white" size={24} />
-        </TouchableOpacity>
         <Text style={globalStyles.headerTitlePAZ}>PAZ</Text>
-        <View style={globalStyles.placeholder} />
       </View>
 
       <ScrollView style={globalStyles.content} showsVerticalScrollIndicator={false}>
@@ -262,25 +244,12 @@ export default function CreateStoryScreen({ navigation }) {
         >
           <Text style={globalStyles.primaryButtonText}>Cancelar</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[globalStyles.primaryButton, isPublishing && styles.publishingButton]}
           onPress={handleSave}
           disabled={isPublishing}
         >
           <Text style={globalStyles.primaryButtonText}>{isPublishing ? "Publicando..." : "Publicar"}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={globalStyles.bottomNav}>
-        <TouchableOpacity style={globalStyles.navButton} onPress={() => navigation.replace("Home")}>
-          <Home color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton}>
-          <Plus color={COLORS.primary} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToProfile}>
-          <UserIcon color={COLORS.textMuted} size={24} />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -305,10 +274,13 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   actionButtons: {
-    flexDirection: "row",
-    paddingHorizontal: SPACING.large,
-    paddingVertical: SPACING.large,
-    gap: SPACING.medium,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: SPACING.xxs,
+    gap: SPACING.xxs,
   },
   disabledButton: {
     opacity: 0.5,

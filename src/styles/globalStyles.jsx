@@ -6,8 +6,8 @@ const { width, height } = Dimensions.get("window")
 // Colores principales de la aplicación
 export const COLORS = {
   // Colores de fondo
-  background: "#040813",
-  card: "#111827",
+  background: "#141414",
+  card: "#343434",
   cardDark: "#0d1117",
 
   // Colores de texto
@@ -49,6 +49,7 @@ export const SIZES = {
 
 // Espaciado
 export const SPACING = {
+  xxs: 1,
   xs: 5,
   small: 10,
   medium: 15,
@@ -118,6 +119,7 @@ export const globalStyles = StyleSheet.create({
     fontFamily: FONTS.bold,
     color: COLORS.text,
     letterSpacing: 4,
+    textAlign: "center",
   },
 
   backButton: {
@@ -133,7 +135,7 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderRadius: RADIUS.medium,
     paddingVertical: SPACING.medium,
-    alignItems: "center",
+    paddingHorizontal: SPACING.medium,
     marginBottom: SPACING.large,
   },
 
@@ -147,7 +149,7 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: COLORS.border,
     borderRadius: RADIUS.medium,
     paddingVertical: SPACING.medium,
-    alignItems: "center",
+    paddingHorizontal: SPACING.medium,
     marginBottom: SPACING.large,
   },
 

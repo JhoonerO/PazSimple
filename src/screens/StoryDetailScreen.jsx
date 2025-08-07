@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, TextInput } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { ArrowLeft, Heart, MessageCircle, Send } from "lucide-react-native"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
+import { useNavigation } from "@react-navigation/native"
 
 // Comentarios mock
 const mockComments = [
@@ -28,17 +28,13 @@ const mockComments = [
   },
 ]
 
-export default function StoryDetailScreen({ navigation, route }) {
+export default function StoryDetailScreen({ route }) {
   const { story } = route.params
   const [liked, setLiked] = useState(false)
   const [newComment, setNewComment] = useState("")
   const [comments, setComments] = useState(mockComments)
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const handleLike = () => {
     setLiked(!liked)
@@ -60,14 +56,6 @@ export default function StoryDetailScreen({ navigation, route }) {
 
   const goBack = () => {
     navigation.goBack()
-  }
-
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
   }
 
   return (

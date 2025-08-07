@@ -2,11 +2,11 @@
 
 import { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, FlatList } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { ArrowLeft, Bell, Heart, MessageCircle, Home, Plus, User, Clock, CheckCircle } from "lucide-react-native"
 import { globalStyles, COLORS, FONTS, SIZES, SPACING, RADIUS } from "../styles/globalStyles"
 import { useToast } from "../hooks/useToast"
 import Toast from "../components/Toast"
+import { useNavigation } from "@react-navigation/native"
 
 // Datos mock de notificaciones que coinciden con las historias reales
 const mockNotifications = [
@@ -98,15 +98,10 @@ const mockNotifications = [
   },
 ]
 
-export default function NotificationsScreen({ navigation }) {
+export default function NotificationsScreen() {
   const [notifications, setNotifications] = useState(mockNotifications)
   const { toastConfig, showToast, hideToast } = useToast()
-
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+  const navigation = useNavigation();
 
   const markAllAsRead = () => {
     const updatedNotifications = notifications.map((notification) => ({
@@ -136,9 +131,9 @@ export default function NotificationsScreen({ navigation }) {
   }
 
   const goBack = () => navigation.goBack()
-  const goToHome = () => navigation.replace("Home")
+  const goToHome = () => navigation.navigate("Home")
   const goToCreateStory = () => navigation.navigate("CreateStory")
-  const goToProfile = () => navigation.replace("Profile")
+  const goToProfile = () => navigation.navigate("Profile")
 
   const renderNotificationItem = ({ item }) => {
     const unreadStyle = !item.read ? styles.unreadNotification : {}
@@ -195,14 +190,6 @@ export default function NotificationsScreen({ navigation }) {
     )
   }
 
-  if (!fontsLoaded) {
-    return (
-      <View style={globalStyles.loadingContainer}>
-        <Text style={globalStyles.loadingText}>Cargando...</Text>
-      </View>
-    )
-  }
-
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
@@ -241,18 +228,6 @@ export default function NotificationsScreen({ navigation }) {
           <Text style={styles.emptyText}>Cuando tengas nuevas notificaciones, aparecerán aquí.</Text>
         </View>
       )}
-
-      <View style={globalStyles.bottomNav}>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToHome}>
-          <Home color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToCreateStory}>
-          <Plus color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-        <TouchableOpacity style={globalStyles.navButton} onPress={goToProfile}>
-          <User color={COLORS.textMuted} size={24} />
-        </TouchableOpacity>
-      </View>
     </View>
   )
 }

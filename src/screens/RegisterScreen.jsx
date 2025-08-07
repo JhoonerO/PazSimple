@@ -8,7 +8,7 @@ import BackgroundImage from "../components/BackgroundImage"
 import { useToast } from "../hooks/useToast" // Asumiendo que useToast.js está en ../hooks/
 import Toast from "../components/Toast" // Asumiendo que Toast.jsx está en ../components/
 
-export default function RegisterScreen({ navigation }) {
+export default function RegisterScreen() {
   // Estados originales
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")

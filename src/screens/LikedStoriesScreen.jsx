@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native"
-import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins"
 import { ArrowLeft, Heart, MessageCircle, Home, Plus, User } from "lucide-react-native"
+import { useNavigation } from "@react-navigation/native"
 
 // Historias que me gustaron (mock data)
 const likedStories = [
@@ -17,13 +17,8 @@ const likedStories = [
   },
 ]
 
-export default function LikedStoriesScreen({ navigation }) {
-  // Cargar fuentes Poppins
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  })
+export default function LikedStoriesScreen() {
+  const navigation = useNavigation();
 
   const handleStoryPress = (story) => {
     navigation.navigate("StoryDetail", { story })
@@ -43,15 +38,6 @@ export default function LikedStoriesScreen({ navigation }) {
 
   const goToProfile = () => {
     navigation.replace("Profile")
-  }
-
-  // Mostrar loading mientras cargan las fuentes
-  if (!fontsLoaded) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Cargando...</Text>
-      </View>
-    )
   }
 
   return (
